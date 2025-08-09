@@ -1,0 +1,64 @@
+let {
+    EmbedBuilder,
+    Client,
+    CommandInteraction,
+    ChannelType,
+    AttachmentBuilder,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    ApplicationCommandOptionType,
+} = require("discord.js");
+let Bal = require("../../Schema/balance.js");
+let { Owner } = require("../../config/config.json");
+let { COLOR, WL } = require("../../config/configEmoji.json");
+module.exports = {
+    name: 'addbalance',
+    description: "add balance to user",
+    accessableby: "admin",
+    options: [
+        {
+            name: "user",
+            description: "User To Add Balance",
+            type: ApplicationCommandOptionType.User,
+            required: true
+        },
+        {
+            name: "balance",
+            description: "how many balance?",
+            type: ApplicationCommandOptionType.Number,
+            required: true
+        }
+    ],
+    /** 
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     * @param {String[]} args 
+     */
+    run: async (client, interaction, args) => {
+        let growId1 = interaction.options.getUser("user");
+        let Balance = interaction.options.getNumber("balance");
+        let growId = growId1.id;
+        let userars = await client.users.fetch(Owner);
+        let wallet1 = await Bal.findOne({ DiscordID: growId })
+            .then((d) => {
+                return d;
+            })
+            .catch((e) => console.error(e));
+
+        if (!wallet1) return interaction.reply({
+                content: "**The user do not set growid right now!**",
+                ephemeral: true
+            });
+
+        await Bal.updateOne({ DiscordID: growId }, { $inc: { Balance: Balance, Deposit: Balance } });
+        await interaction.reply({ content: `${Balance} ${WL} Balance Added To <@${growId}>`, ephemeral: true });
+
+        let sendToOwner = new EmbedBuilder()
+            .setTitle("Adding Balance History")
+            .setDescription(`- User: **<@${wallet1.DiscordID}>**\n- Amount: **${Balance}**`)
+            .setTimestamp()
+            .setColor(COLOR);
+        userars.send({ embeds: [sendToOwner] });
+    }
+}

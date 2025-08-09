@@ -1,0 +1,10 @@
+{
+    "TOKEN": "MTQwMTEwNjAwMTk0MzQ2NTk5NA.GAqR3x.XnSaMQH0k0L03HKfeTMCvKXbhVvnc9RHzRo-Y8",
+    "MongoURL": "mongodb+srv://elaina:elaina@cluster0.r7jvaqb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    "CLIENTID": "1401106001943465994",
+    "Owner": "953507781858713600",
+    "Admin": ["1378554504667988089", "UserID"],
+    "ChannelDonationLog": "1393440515009155073",
+    "ChannelTrakteerLog": "ChannelID",
+    "ChannelSaweriaLog": "ChannelID"
+}
